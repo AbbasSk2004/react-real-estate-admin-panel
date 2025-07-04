@@ -1,7 +1,7 @@
 import api from './api';
 
 const TOKEN_KEY = 'admin_token';
-const API_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000/api';
+const API_URL = process.env.REACT_APP_API_BASE_URL || 'https://realestate-admin-backend.onrender.com/api';
 
 // Store last authentication status globally
 const serviceState = {

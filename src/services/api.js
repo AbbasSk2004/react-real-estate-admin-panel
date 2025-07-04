@@ -90,7 +90,7 @@ export const endpoints = {
 
 // Create axios instance
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000/api',
+  baseURL: process.env.REACT_APP_API_BASE_URL || 'https://realestate-admin-backend.onrender.com/api',
   headers: {
     'Content-Type': 'application/json',
   },
