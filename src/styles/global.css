@@ -1,0 +1,62 @@
+/* Global styles */
+@media (forced-colors: active) {
+  /* Form controls */
+  .form-control {
+    forced-color-adjust: none;
+    background-color: Field;
+    color: FieldText;
+    border-color: FieldText;
+  }
+
+  /* Buttons */
+  .btn {
+    forced-color-adjust: none;
+  }
+
+  /* Links */
+  a {
+    forced-color-adjust: none;
+    color: LinkText;
+  }
+
+  a:hover {
+    color: LinkText;
+    text-decoration: underline;
+  }
+
+  /* Icons */
+  .icon {
+    forced-color-adjust: none;
+    color: ButtonText;
+  }
+
+  /* Borders */
+  .border {
+    forced-color-adjust: none;
+    border-color: CanvasText !important;
+  }
+
+  /* Text colors */
+  .text-primary {
+    forced-color-adjust: none;
+    color: ButtonText !important;
+  }
+
+  .text-secondary {
+    forced-color-adjust: none;
+    color: GrayText !important;
+  }
+
+  /* Backgrounds */
+  .bg-primary {
+    forced-color-adjust: none;
+    background-color: ButtonFace !important;
+    color: ButtonText !important;
+  }
+
+  .bg-secondary {
+    forced-color-adjust: none;
+    background-color: Canvas !important;
+    color: CanvasText !important;
+  }
+} 

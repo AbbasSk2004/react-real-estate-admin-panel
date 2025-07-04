@@ -1,0 +1,44 @@
+:root {
+  --primary-color: #4e73df;
+  --secondary-color: #1cc88a;
+  --font-family: 'Nunito', sans-serif;
+}
+
+/* Font family application */
+body {
+  font-family: var(--font-family);
+}
+
+/* Primary color application */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+/* Secondary color application */
+.btn-success {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.text-success {
+  color: var(--secondary-color) !important;
+}
+
+/* Sidebar collapsed state */
+.sidebar.collapsed {
+  width: 6.5rem;
+}
+
+.sidebar.collapsed .nav-item .nav-link span {
+  display: none;
+}
+
+/* Breadcrumbs visibility */
+.breadcrumb-container {
+  display: var(--show-breadcrumbs, block);
+} 

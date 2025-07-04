@@ -1,0 +1,60 @@
+.property-detail-page {
+  background-color: #f8f9fa;
+  margin-left: 5rem;
+  margin-right: 5rem;
+}
+.agent-avatar {
+  border: none !important;          /* Remove any border */
+  background: transparent !important; /* Remove background */
+  padding: 0 !important;            /* Remove padding */
+  display: inline-block;            /* Wrap tightly */
+  border-radius: 50%;               /* Ensure container is circular */
+}
+
+
+
+.property-description .description-content p {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.3rem;          /* 16px - comfortable reading size */
+  line-height: 1.6;         /* good spacing between lines */
+  color: #555555;           /* a soft, muted dark gray for less harshness */
+  letter-spacing: 0.02em;   /* subtle letter spacing for readability */
+}
+
+.property-header {
+  position: relative;
+  z-index: 1;
+}
+
+.key-details-grid .detail-item {
+  transition: all 0.3s ease;
+}
+
+.key-details-grid .detail-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.contact-owner-card.sticky-top {
+  top: 20px;
+  z-index: 1020;
+}
+
+.similar-properties-section .property-card {
+  transition: transform 0.3s ease;
+}
+
+.similar-properties-section .property-card:hover {
+  transform: translateY(-5px);
+}
+
+@media (max-width: 768px) {
+  .property-gallery-section {
+    height: 50vh;
+  }
+  
+  .contact-owner-card.sticky-top {
+    position: relative !important;
+    top: 0 !important;
+  }
+}

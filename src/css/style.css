@@ -1,0 +1,305 @@
+/* General Layout Styles */
+.min-vh-100 {
+    min-height: 100vh;
+}
+
+/* Topbar Styles */
+.topbar {
+    position: relative;
+    z-index: 1;
+}
+
+.topbar .nav-item .nav-link {
+    position: relative;
+    height: 4.375rem;
+    display: flex;
+    align-items: center;
+    padding: 0 0.75rem;
+}
+
+.topbar .nav-item .nav-link .badge-counter {
+    position: absolute;
+    transform: scale(0.7);
+    transform-origin: top right;
+    right: 0.25rem;
+    margin-top: -0.25rem;
+}
+
+.topbar.navbar-light .navbar-nav .nav-item .nav-link {
+    color: #d1d3e2;
+}
+
+.topbar.navbar-light .navbar-nav .nav-item .nav-link:hover {
+    color: #b7b9cc;
+}
+
+.topbar .dropdown {
+    position: static;
+}
+
+.topbar .dropdown .dropdown-menu {
+    width: calc(100% - 1.5rem);
+    right: 0.75rem;
+}
+
+@media (min-width: 576px) {
+    .topbar .dropdown {
+        position: relative;
+    }
+    .topbar .dropdown .dropdown-menu {
+        width: auto;
+        right: 0;
+    }
+}
+
+.topbar .dropdown-list {
+    padding: 0;
+    border: none;
+    overflow: hidden;
+}
+
+.topbar .dropdown-list .dropdown-header {
+    background-color: #4e73df;
+    border: 1px solid #4e73df;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    color: #fff;
+}
+
+/* Sidebar Toggle Button */
+.sidebar-toggled .sidebar {
+    width: 0 !important;
+    overflow: hidden;
+}
+
+/* Profile Styles */
+.img-profile {
+    height: 2rem;
+    width: 2rem;
+}
+
+.rounded-circle {
+    border-radius: 50% !important;
+}
+
+.topbar-divider {
+    width: 0;
+    border-right: 1px solid #e3e6f0;
+    height: calc(4.375rem - 2rem);
+    margin: auto 1rem;
+}
+
+/* Dropdown Styles */
+.dropdown-menu {
+    position: absolute;
+    z-index: 1000;
+    display: none;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.animated--grow-in {
+    animation-name: growIn;
+    animation-duration: 200ms;
+    animation-timing-function: transform cubic-bezier(.18,1.25,.4,1), opacity cubic-bezier(0,1,.4,1);
+}
+
+@keyframes growIn {
+    0% {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Status Indicator */
+.status-indicator {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border: 2px solid #fff;
+}
+
+/* Badge Styles */
+.badge {
+    display: inline-block;
+    padding: 0.25em 0.4em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.35rem;
+}
+
+.badge-danger {
+    color: #fff;
+    background-color: #e74a3b;
+}
+
+/* Icon Circle */
+.icon-circle {
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Text Colors */
+.text-gray-500 {
+    color: #b7b9cc !important;
+}
+
+.text-gray-600 {
+    color: #858796 !important;
+}
+
+/* Background Colors */
+.bg-primary {
+    background-color: #4e73df !important;
+}
+
+.bg-success {
+    background-color: #1cc88a !important;
+}
+
+/* Responsive Utilities */
+@media (min-width: 768px) {
+    .d-md-none {
+        display: none !important;
+    }
+}
+
+/* Shadow Utilities */
+.shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+
+.sidebar {
+    width: 14rem;
+    min-height: 100vh;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+}
+
+.sidebar.toggled {
+    width: 6.5rem;
+    overflow: visible;
+}
+
+.topbar {
+    height: 4.375rem;
+    z-index: 1001;
+}
+
+#wrapper {
+    display: flex;
+}
+
+#content-wrapper {
+    width: 100%;
+    overflow-x: hidden;
+    margin-left: 14rem;
+    transition: margin 0.25s ease-in-out;
+}
+
+.sidebar.toggled + #content-wrapper {
+    margin-left: 6.5rem;
+}
+
+@media (max-width: 768px) {
+    #content-wrapper {
+        margin-left: 6.5rem;
+    }
+    
+    .sidebar.toggled + #content-wrapper {
+        margin-left: 0;
+    }
+}
+
+/* Ensure content doesn't get hidden under the fixed navbar */
+#content {
+    padding-top: 4.375rem;
+}
+
+/* Adjust footer positioning */
+.sticky-footer {
+    padding: 2rem 0;
+    flex-shrink: 0;
+}
+
+/* Ensure dropdowns appear above the fixed elements */
+.dropdown-menu {
+    z-index: 1002;
+}
+
+/* Smooth transitions */
+.sidebar,
+#content-wrapper {
+    transition: all 0.25s ease-in-out;
+}
+
+/* Fix for mobile view */
+@media (max-width: 576px) {
+    .navbar-search {
+        padding-left: 0;
+    }
+    
+    .topbar .dropdown {
+        position: static;
+    }
+}
+
+.fixed-top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 14rem;  /* Same as sidebar width */
+    z-index: 1030;
+}
+
+/* Adjust navbar width when sidebar is toggled */
+.sidebar.toggled ~ #content-wrapper .fixed-top {
+    left: 6.5rem;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .fixed-top {
+        left: 6.5rem;
+    }
+    
+    .sidebar.toggled ~ #content-wrapper .fixed-top {
+        left: 0;
+    }
+}
+
+.topbar {
+    height: 4.375rem;
+    background-color: #fff;
+}
+
+#content {
+    padding-top: 0.375rem;
+}
+
+#content-wrapper {
+    padding-top: 1rem;
+}
+
+/* Ensure dropdowns appear above the fixed navbar */
+.dropdown-menu {
+    z-index: 1031;
+} 

@@ -1,0 +1,92 @@
+/* Override Bootstrap's -ms-high-contrast with the new Forced Colors Mode standard */
+@media (forced-colors: active) {
+  /* Form controls */
+  .form-control,
+  .form-select {
+    border-color: ButtonText;
+    background-color: Canvas;
+    color: ButtonText;
+  }
+
+  /* Buttons */
+  .btn {
+    border-color: ButtonText;
+    background-color: ButtonFace;
+    color: ButtonText;
+  }
+
+  .btn-primary {
+    forced-color-adjust: none;
+    background-color: ButtonText;
+    color: ButtonFace;
+  }
+
+  .btn-secondary {
+    forced-color-adjust: none;
+    background-color: ButtonFace;
+    color: ButtonText;
+  }
+
+  /* Links */
+  a {
+    color: LinkText;
+  }
+
+  /* Tables */
+  .table {
+    forced-color-adjust: none;
+    border-color: CanvasText;
+  }
+
+  .table th,
+  .table td {
+    forced-color-adjust: none;
+    border-color: CanvasText;
+  }
+
+  /* Form checks and switches */
+  .form-check-input {
+    border-color: ButtonText;
+    background-color: Canvas;
+  }
+
+  .form-check-input:checked {
+    forced-color-adjust: none;
+    background-color: Highlight;
+    border-color: Highlight;
+  }
+
+  /* Badges */
+  .badge {
+    border: 1px solid ButtonText;
+  }
+
+  /* Cards */
+  .card {
+    forced-color-adjust: none;
+    background-color: Canvas;
+    border-color: CanvasText;
+  }
+
+  .card-header {
+    border-bottom-color: ButtonText;
+  }
+
+  .nav-link.active {
+    forced-color-adjust: none;
+    background-color: Highlight;
+    color: HighlightText;
+  }
+
+  .dropdown-item:hover,
+  .dropdown-item:focus {
+    forced-color-adjust: none;
+    background-color: Highlight;
+    color: HighlightText;
+  }
+
+  .alert {
+    forced-color-adjust: none;
+    border-color: CanvasText;
+  }
+} 

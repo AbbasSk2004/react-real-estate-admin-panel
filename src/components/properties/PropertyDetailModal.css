@@ -1,0 +1,21 @@
+.modal-content-scroll {
+  height: calc(100vh - 56px); /* Subtract modal header height */
+  overflow-y: auto;
+}
+
+.modal-content-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content-scroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.modal-content-scroll::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.modal-content-scroll::-webkit-scrollbar-thumb:hover {
+  background: #555;
+} 
