@@ -25,6 +25,9 @@ const propertiesService = {
     }
 
     // Ensure numeric fields are properly formatted
+    if (propertyData.garden_area) {
+      propertyData.garden_area = parseFloat(propertyData.garden_area);
+    }
     if (propertyData.property_type === 'Retail') {
       if (propertyData.shop_front_width) {
         propertyData.shop_front_width = parseFloat(propertyData.shop_front_width);
@@ -48,15 +51,18 @@ const propertiesService = {
       }
     });
 
-    // If no new images are provided, remove the images field to preserve existing images
-    if (!updateData.images?.main && !updateData.images?.additional) {
-      delete updateData.images;
+    // Keep the images key if user explicitly passes null/empty values (used to delete)
+    if (updateData.images) {
+      const hasMeaningfulChange = Object.keys(updateData.images).some(key => updateData.images[key] !== undefined);
+      if (!hasMeaningfulChange) {
+        delete updateData.images;
+      }
     }
 
     // Ensure numeric fields are properly typed
-    ['units', 'elevators', 'floor', 'bedrooms', 'bathrooms', 'livingrooms', 'parking_spaces', 'year_built', 'plot_size', 'shop_front_width', 'storage_area', 'ceiling_height', 'loading_docks'].forEach(field => {
+    ['units', 'elevators', 'floor', 'bedrooms', 'bathrooms', 'livingrooms', 'parking_spaces', 'year_built', 'garden_area', 'plot_size', 'shop_front_width', 'storage_area', 'ceiling_height', 'loading_docks'].forEach(field => {
       if (updateData[field] !== undefined && updateData[field] !== null && updateData[field] !== '') {
-        if (['plot_size', 'shop_front_width', 'storage_area', 'ceiling_height'].includes(field)) {
+        if (['garden_area', 'plot_size', 'shop_front_width', 'storage_area', 'ceiling_height'].includes(field)) {
           updateData[field] = parseFloat(updateData[field]);
         } else {
           updateData[field] = parseInt(updateData[field]);

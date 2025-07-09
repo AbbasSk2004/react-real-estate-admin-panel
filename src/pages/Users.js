@@ -499,8 +499,8 @@ const Users = () => {
                     <Form.Control 
                       type="email" 
                       value={currentUser.email || ''} 
-                      onChange={(e) => setCurrentUser({...currentUser, email: e.target.value})}
-                      required
+                      disabled
+                      readOnly
                     />
                   </Form.Group>
 

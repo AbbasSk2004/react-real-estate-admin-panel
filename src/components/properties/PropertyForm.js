@@ -1,6 +1,16 @@
 import React, { useState, useRef } from 'react';
 import { PROPERTY_TYPE_FIELDS, PROPERTY_TYPES, COMMON_FEATURES, lebanonVillages, lebanonCities } from '../../utils/properties_const';
 
+// Helper to convert a File object to a base64 data URL
+const fileToBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (err) => reject(err);
+    reader.readAsDataURL(file);
+  });
+};
+
 function PropertyForm({ mode = 'create', property = null, onSubmitSuccess }) {
   const mainImageInputRef = useRef(null);
   const additionalImagesInputRef = useRef(null);
@@ -76,7 +86,12 @@ function PropertyForm({ mode = 'create', property = null, onSubmitSuccess }) {
 
   // State for file uploads
   const [mainImage, setMainImage] = useState(null);
-  const [additionalImages, setAdditionalImages] = useState([]);
+  const [additionalImages, setAdditionalImages] = useState([]); // newly selected images (File[])
+
+  // Existing additional images (edit mode) and removals tracking
+  const [currentAdditionalImages, setCurrentAdditionalImages] = useState(property?.images || []);
+  const [removedAdditionalImages, setRemovedAdditionalImages] = useState([]);
+  const [removeMainImage, setRemoveMainImage] = useState(false);
 
   // State for cities based on governorate
   const [cities, setCities] = useState([]);
@@ -199,6 +214,14 @@ function PropertyForm({ mode = 'create', property = null, onSubmitSuccess }) {
     }
   }, [property, mode]);
 
+  // Refresh existing additional images when the property prop changes (e.g., switching edit target)
+  React.useEffect(() => {
+    if (mode === 'edit') {
+      setCurrentAdditionalImages(property?.images || []);
+      setRemovedAdditionalImages([]);
+    }
+  }, [property, mode]);
+
   // Reset extra fields when property type changes
   React.useEffect(() => {
     if (form.propertyType) {
@@ -229,7 +252,7 @@ function PropertyForm({ mode = 'create', property = null, onSubmitSuccess }) {
     // console.log('Input change:', { name, value, type: typeof value });
     
     // Special handling for numeric fields
-    if (['floor', 'garden_area', 'bedrooms', 'bathrooms', 'livingrooms', 'parkingSpaces', 'area'].includes(name)) {
+    if (['floor', 'garden_area', 'bedrooms', 'bathrooms', 'livingrooms', 'parkingSpaces', 'area', 'plotSize', 'loading_docks', 'ceiling_height'].includes(name)) {
       // Allow empty string or valid numbers
       if (value === '' || !isNaN(value)) {
         if (name === 'garden_area') {
@@ -237,39 +260,30 @@ function PropertyForm({ mode = 'create', property = null, onSubmitSuccess }) {
           if (value === '' || Number(value) >= 0) {
             setForm(prev => ({
               ...prev,
-              [name]: value === '' ? '' : value
+              [name]: value === '' ? '' : parseFloat(value)
             }));
           }
         } else if (name === 'floor') {
           // Handle floor field based on property type
+          const valueNum = value === '' ? '' : parseInt(value, 10);
+
+          // Validate according to property type rules
           if (form.propertyType === 'Villa' || form.propertyType === 'Building') {
-            // For Villa and Building types, ensure floor is a positive integer
-            const floorValue = value === '' ? '' : parseInt(value);
-            if (floorValue !== '' && floorValue < 1) {
-              return; // Don't update if value is less than 1
+            if (valueNum !== '' && valueNum < 1) {
+              return; // Ensure positive integer for Villa & Building
             }
-            setForm(prev => ({
-              ...prev,
-              [name]: floorValue
-            }));
-            // console.log('Updated floor value:', floorValue);
           } else if (form.propertyType === 'Apartment') {
-            // For Apartments, allow any non-negative integer
-            const floorValue = value === '' ? '' : parseInt(value);
-            if (floorValue !== '' && floorValue < 0) {
-              return; // Don't update if value is negative
+            if (valueNum !== '' && valueNum < 0) {
+              return; // Allow 0 and positives for Apartment
             }
-            setForm(prev => ({
-              ...prev,
-              [name]: floorValue
-            }));
-            // console.log('Updated apartment floor value:', floorValue);
-          } else {
-            setForm(prev => ({
-              ...prev,
-              [name]: value === '' ? '' : parseInt(value)
-            }));
           }
+
+          // Store numeric value to keep consistent behaviour with number input
+          setForm(prev => ({
+            ...prev,
+            [name]: value === '' ? '' : valueNum
+          }));
+          // console.log('Updated floor value:', value);
         } else {
           setForm(prev => ({
             ...prev,
@@ -388,6 +402,8 @@ function PropertyForm({ mode = 'create', property = null, onSubmitSuccess }) {
       }
       
       setMainImage(file);
+      // If user selects a new main image, ensure removal flag is cleared
+      setRemoveMainImage(false);
     }
   };
 
@@ -592,6 +608,31 @@ function PropertyForm({ mode = 'create', property = null, onSubmitSuccess }) {
         }
       }
 
+      // Prepare images payload (only in edit/create when user selected new images)
+      const imagesPayload = {};
+      if (mainImage) {
+        try {
+          imagesPayload.main = await fileToBase64(mainImage);
+        } catch (err) {
+          console.error('Error reading main image:', err);
+        }
+      } else if (removeMainImage) {
+        imagesPayload.main = null; // Signal backend to delete current main image
+      }
+
+      // Existing additional images removals
+      if (removedAdditionalImages.length > 0) {
+        imagesPayload.removeAdditional = removedAdditionalImages;
+      }
+
+      if (additionalImages && additionalImages.length > 0) {
+        try {
+          imagesPayload.additional = await Promise.all(additionalImages.map(fileToBase64));
+        } catch (err) {
+          console.error('Error reading additional images:', err);
+        }
+      }
+
       // For now, just pass the form data to onSubmitSuccess
       // console.log('Form state before submission:', form);
       
@@ -665,6 +706,11 @@ function PropertyForm({ mode = 'create', property = null, onSubmitSuccess }) {
         office_layout: form.office_layout || null,
         meeting_rooms: form.meeting_rooms ? parseInt(form.meeting_rooms) : null,
       };
+
+      // Attach images if any were selected
+      if (Object.keys(imagesPayload).length > 0) {
+        formData.images = imagesPayload;
+      }
 
       // console.log('FormData being sent to backend:', {
       //   floor: formData.floor,
@@ -1213,6 +1259,20 @@ function PropertyForm({ mode = 'create', property = null, onSubmitSuccess }) {
                               className="mb-2"
                             />
                             <small className="text-muted">Current main image</small>
+                            <br />
+                            <button
+                              type="button"
+                              className="btn btn-sm btn-outline-danger mt-2"
+                              onClick={() => {
+                                setRemoveMainImage(true);
+                                setMainImage(null);
+                                if (mainImageInputRef.current) {
+                                  mainImageInputRef.current.value = '';
+                                }
+                              }}
+                            >
+                              Remove Main Image
+                            </button>
                           </div>
                         )}
                         <input 
@@ -1234,17 +1294,28 @@ function PropertyForm({ mode = 'create', property = null, onSubmitSuccess }) {
                     <div className="col-12">
                       <div className="mb-3">
                         <label htmlFor="additionalImages" className="form-label">Additional Images (Select multiple)</label>
-                        {mode === 'edit' && property?.images?.length > 0 && (
+                        {mode === 'edit' && currentAdditionalImages.length > 0 && (
                           <div className="mb-2">
                             <div className="row">
-                              {property.images.map((img, index) => (
-                                <div key={index} className="col-md-3 mb-2">
-                                  <img 
-                                    src={img} 
-                                    alt={`Current image ${index + 1}`} 
-                                    style={{ maxWidth: '100%', display: 'block' }} 
-                                    className="mb-1"
+                              {currentAdditionalImages.map((img, index) => (
+                                <div key={index} className="col-md-3 mb-2 position-relative">
+                                  <img
+                                    src={img}
+                                    alt={`Current image ${index + 1}`}
+                                    style={{ maxWidth: '100%', display: 'block' }}
+                                    className="mb-1 rounded"
                                   />
+                                  <button
+                                    type="button"
+                                    className="btn btn-danger btn-sm position-absolute top-0 end-0 translate-middle"
+                                    style={{ zIndex: 2 }}
+                                    onClick={() => {
+                                      setRemovedAdditionalImages(prev => [...prev, img]);
+                                      setCurrentAdditionalImages(prev => prev.filter((_, i) => i !== index));
+                                    }}
+                                  >
+                                    &times;
+                                  </button>
                                 </div>
                               ))}
                             </div>

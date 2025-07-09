@@ -496,6 +496,17 @@ const PropertyDetail = ({ property: propProperty, isModal }) => {
                   {/* Land-specific details */}
                   {property.property_type === 'Land' && (
                     <>
+                      {hasDetail(property.plot_size) && (
+                        <div className="col-6 col-md-3">
+                          <div className="detail-item d-flex align-items-center p-2 bg-light rounded-2">
+                            <i className="fas fa-expand-arrows-alt fa-lg text-primary me-2"></i>
+                            <div>
+                              <div className="fw-bold">{property.plot_size} m²</div>
+                              <small className="text-muted">Plot Size</small>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                       {property.land_type && (
                         <div className="col-6 col-md-3">
                           <div className="detail-item d-flex align-items-center p-2 bg-light rounded-2">
