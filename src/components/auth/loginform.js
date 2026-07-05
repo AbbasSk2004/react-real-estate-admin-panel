@@ -28,7 +28,18 @@ const LoginForm = ({ onLoginSuccess }) => {
         onLoginSuccess();
       }
     } catch (err) {
-      setError(err.response?.data?.error || 'Failed to login. Please check your credentials.');
+      const data = err.response?.data;
+      let message = 'Failed to login. Please check your credentials.';
+
+      if (data?.error === 'PASSWORD_NOT_SET') {
+        message = 'Your account has no password yet. Run the migration password repair script or reset your password.';
+      } else if (data?.message) {
+        message = data.message;
+      } else if (data?.error === 'INVALID_CREDENTIALS') {
+        message = 'Invalid email or password. If you migrated from Supabase, import your old passwords or use the default migrated password.';
+      }
+
+      setError(message);
     } finally {
       setLoading(false);
     }

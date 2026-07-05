@@ -1,10 +1,22 @@
 import api from './api';
 
+const normalizePropertiesList = (data) => {
+  if (Array.isArray(data)) {
+    return data;
+  }
+
+  if (data && Array.isArray(data.properties)) {
+    return data.properties;
+  }
+
+  return [];
+};
+
 const propertiesService = {
-  // Get all properties
+  // Get all properties (admin: include verified + unverified, high page size)
   getAllProperties: async () => {
-    const response = await api.get('/properties');
-    return response.data;
+    const response = await api.get('/properties?verified=all&pageSize=500');
+    return normalizePropertiesList(response.data);
   },
 
   // Get a single property

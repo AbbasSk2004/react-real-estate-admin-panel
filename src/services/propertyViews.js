@@ -7,6 +7,8 @@ const recordView = async (propertyId) => {
     const response = await api.post(`/property-views/${propertyId}`);
     if (response.data?.data?.count !== undefined) {
       _cache[propertyId] = response.data.data.count;
+    } else if (response.data?.count !== undefined) {
+      _cache[propertyId] = response.data.count;
     }
     return response.data;
   } catch (error) {
@@ -23,6 +25,8 @@ const getViewCount = async (propertyId) => {
     const response = await api.get(`/property-views/${propertyId}`);
     if (response.data?.data?.count !== undefined) {
       _cache[propertyId] = response.data.data.count;
+    } else if (response.data?.count !== undefined) {
+      _cache[propertyId] = response.data.count;
     }
     return response.data;
   } catch (error) {

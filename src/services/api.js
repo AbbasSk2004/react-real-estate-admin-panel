@@ -112,11 +112,7 @@ api.interceptors.request.use(
     const token = localStorage.getItem(TOKEN_KEY);
     
     if (token) {
-      // Ensure token is properly formatted with Bearer prefix
       config.headers.Authorization = `Bearer ${token}`;
-      console.log('API request to:', config.url, '- Token added to headers');
-    } else {
-      console.log('API request to:', config.url, '- No token available');
     }
     
     return config;
@@ -126,9 +122,28 @@ api.interceptors.request.use(
   }
 );
 
-// Add response interceptor for error handling
+// Add response interceptor for error handling and API envelope normalization
 api.interceptors.response.use(
   (response) => {
+    const body = response.data;
+
+    if (body && typeof body === 'object' && body.success === true) {
+      const payloadKeys = Object.keys(body).filter((key) => key !== 'success' && key !== 'message');
+
+      // Unwrap simple `{ success, data }` envelopes used by the shared backend.
+      if (Object.prototype.hasOwnProperty.call(body, 'data') && payloadKeys.length === 1 && payloadKeys[0] === 'data') {
+        response.data = body.data;
+      } else if (payloadKeys.includes('properties') && Array.isArray(body.properties)) {
+        response.data = {
+          properties: body.properties,
+          totalCount: body.totalCount,
+          totalPages: body.totalPages,
+          currentPage: body.currentPage,
+          pageSize: body.pageSize
+        };
+      }
+    }
+
     return response;
   },
   async (error) => {

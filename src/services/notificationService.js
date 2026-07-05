@@ -1,7 +1,7 @@
 import api from './api';
 
 const TOKEN_KEY = 'admin_token';
-const API_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001/api/';
+const API_BASE_URL = (process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001/api').replace(/\/?$/, '');
 
 // Store last authentication status globally
 const serviceState = {
@@ -81,7 +81,9 @@ class NotificationService {
       serviceState.fetchesInProgress[cacheKey] = promise;
       
       const response = await promise;
-      const result = response.data || [];
+      const result = Array.isArray(response.data)
+        ? response.data
+        : (response.data?.data || response.data || []);
       
       // Clear from in-progress tracking
       delete serviceState.fetchesInProgress[cacheKey];
@@ -104,7 +106,9 @@ class NotificationService {
   async getAllNotifications() {
     try {
       const response = await api.get(`/notifications?_=${Date.now()}`);
-      return response.data || [];
+      return Array.isArray(response.data)
+        ? response.data
+        : (response.data?.data || response.data || []);
     } catch (error) {
       if (!error.isLogged) {
         console.error('Error fetching all notifications:', error);
@@ -231,16 +235,14 @@ class NotificationService {
     console.log('Attempting to connect to notification stream...');
     
     try {
-      // Create the URL with token as query parameter
-      // The admin backend routes are mounted under /api/admin
-      const url = new URL('admin/notifications/stream', API_URL);
-      url.searchParams.append('token', token);
+      // EventSource cannot send Authorization headers, so pass the JWT as a query param.
+      const url = `${API_BASE_URL}/admin/notifications/stream?token=${encodeURIComponent(token)}`;
       
       if (this.eventSource) {
         this.eventSource.close();
       }
 
-      this.eventSource = new EventSource(url.toString());
+      this.eventSource = new EventSource(url);
 
       // Success handler
       this.eventSource.onopen = () => {

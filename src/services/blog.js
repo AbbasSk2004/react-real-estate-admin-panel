@@ -3,7 +3,8 @@ import api from './api';
 const blogService = {
   getAllBlogs: async () => {
     const response = await api.get('/blogs');
-    return response.data;
+    const data = response.data;
+    return Array.isArray(data) ? data : (data?.blogs || []);
   },
 
   getBlogById: async (id) => {
