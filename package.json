@@ -41,13 +41,11 @@
     "react-dom": ">=18.2.0"
   },
   "scripts": {
-    "start": "set PORT=4000 && react-scripts start",
+    "start": "set PORT=5000 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "frontend": "set PORT=4000 && react-scripts start",
-    "backend": "cd backend && npm run dev",
-    "dev": "concurrently \"npm run frontend\" \"npm run backend\""
+    "dev": "npm start"
   },
   "eslintConfig": {
     "extends": [

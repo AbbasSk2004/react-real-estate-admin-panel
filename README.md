@@ -45,8 +45,8 @@ In the project directory, you can run:
 
 ### `npm start`
 
-Runs the app in development mode on port 4000.\
-Open [http://localhost:4000](http://localhost:4000) to view it in your browser.
+Runs the app in development mode on port 5000.\
+Open [http://localhost:5000](http://localhost:5000) to view it in your browser.
 
 ### `npm run build`
 
@@ -58,7 +58,7 @@ Launches the test runner in interactive watch mode.
 
 ### `npm run dev`
 
-Runs both frontend and backend concurrently for full-stack development.
+Runs the frontend only (same as `npm start`).
 
 ## Deployment
 

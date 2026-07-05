@@ -90,7 +90,8 @@ export const endpoints = {
 
 // Create axios instance
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL || 'https://realestate-admin-backend.onrender.com/api',
+  // Point at the main backend API. Set REACT_APP_API_BASE_URL in .env for different environments.
+  baseURL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001/api',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -103,6 +104,11 @@ let isRedirecting = false;
 // Add request interceptor to add auth token to all requests
 api.interceptors.request.use(
   (config) => {
+    // Ensure we always target the admin API namespace on the main backend
+    if (config.url && config.url.startsWith('/') && !config.url.startsWith('/admin') && !config.url.startsWith('/api')) {
+      config.url = `/admin${config.url}`;
+    }
+
     const token = localStorage.getItem(TOKEN_KEY);
     
     if (token) {
