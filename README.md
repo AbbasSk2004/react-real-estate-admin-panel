@@ -1,43 +1,35 @@
 # Real Estate Admin Panel
 
-A comprehensive admin dashboard for real estate property management, built with React and Bootstrap. This application provides a complete solution for managing properties, users, inquiries, agents, and analytics for a real estate business.
+A modern administration dashboard for operating the Eskan real estate platform. The panel provides a centralized workspace for managing properties, users, inquiries, agents, content, and analytics through a secure React-based interface.
 
 ## Live Demo
+
 Visit the live application at: [https://react-real-estate-admin-panel.netlify.app](https://react-real-estate-admin-panel.netlify.app)
 
-## Features
+## What the Admin Panel Covers
 
-- **Dashboard**: Overview of key metrics with charts and statistics
-- **Property Management**: Add, edit, view, and delete property listings with detailed information and image galleries
-- **User Management**: Manage user accounts, permissions, and roles
-- **Inquiry Handling**: Track and respond to customer inquiries and contact submissions
-- **Agent Management**: Manage real estate agents and their applications
-- **Content Management**: Blog posts, testimonials, and other website content
-- **Analytics**: Detailed reports and charts for business performance
-- **Profile Management**: User profile settings and preferences
+- Dashboard metrics and business insights
+- Property management with create, edit, publish, and archive flows
+- User and role management
+- Inquiry and contact submission handling
+- Agent approval and profile administration
+- Blog, testimonial, and content management
+- Profile and account settings for administrators
 
 ## Tech Stack
 
-- **Frontend**: React, React Bootstrap, Material UI components
-- **State Management**: React Context API
-- **Routing**: React Router v6
-- **Charts**: Chart.js with react-chartjs-2
-- **Rich Text Editing**: React Quill
-- **Form Handling**: Custom forms with validation
-- **Authentication**: JWT-based authentication
-- **Styling**: Bootstrap 5, custom CSS
-- **Icons**: Font Awesome, React Icons
+- React 18
+- React Router v6
+- React Bootstrap and Material UI
+- Chart.js with react-chartjs-2
+- React Quill for rich content editing
+- Context API for application state
+- JWT-based authentication with the backend API
+- Bootstrap 5 and custom CSS styling
 
-## Data Models
+## Backend Integration
 
-The application manages several data entities including:
-
-- **Properties**: Listings with details, pricing, features, images, and location information
-- **Users**: Admin users and clients with role-based permissions
-- **Inquiries**: Customer inquiries about properties and general contact submissions
-- **Agents**: Real estate agent profiles and applications
-- **Content**: Blog posts, testimonials, and marketing content
-- **Analytics**: Property views, user engagement, and business metrics
+The admin panel communicates with the backend services through a REST API and uses JWT tokens for authenticated sessions. Platform data is persisted in MongoDB and surfaced in the admin experience in real time through the backend endpoints.
 
 ## Available Scripts
 
@@ -45,29 +37,29 @@ In the project directory, you can run:
 
 ### `npm start`
 
-Runs the app in development mode on port 5000.\
+Runs the app in development mode on port 5000.
 Open [http://localhost:5000](http://localhost:5000) to view it in your browser.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder, optimized for best performance.
+Builds the app for production into the `build` folder.
 
 ### `npm test`
 
-Launches the test runner in interactive watch mode.
+Runs the test suite in watch mode.
 
 ### `npm run dev`
 
-Runs the frontend only (same as `npm start`).
+Starts the frontend development server.
 
 ## Deployment
 
-This project is configured for easy deployment on Netlify with the included `netlify.toml` configuration.
+The project is configured for deployment on Netlify using the included `netlify.toml` configuration.
 
 ## Screenshots
 
 ![Dashboard](public/img/dashboard-screenshot.jpg)
-*Dashboard with analytics overview*
+*Executive dashboard with performance insights*
 
 ![Property Management](public/img/properties-screenshot.jpg)
 *Property management interface*
